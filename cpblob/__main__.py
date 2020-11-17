@@ -68,15 +68,16 @@ def main(force, source, target):
         if force:
             blob.delete_blob()
         else:
-            print(f"{container_name}:{blob_name} already exists, use -f to force")
+            print(f"{container_name}:{blob_name} already exists, use -f to force", file=sys.stderr)
             sys.exit(3)
 
     if not blob.exists() and download:
-        print(f"{container_name}:{blob_name} does not exist")
+        print(f"{container_name}:{blob_name} does not exist", file=sys.stderr)
         sys.exit(4)
 
     if not download and not file_name.is_file():
-        print(f"{file_name} does not exist or is not a file")
+        print(f"{file_name} does not exist or is not a file", file=sys.stderr)
+        sys.exit(5)
 
     if download:
         progressbar = tqdm(total=blob.get_blob_properties()['size'], unit='B', unit_scale=True, unit_divisor=1024)
